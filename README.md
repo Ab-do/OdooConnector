@@ -8,7 +8,7 @@ INVOICE_URL = '/invoice'
 ORDER_URL = '/order'
 
 odoo = Connector(ROOT, 'email@user.com', 'password', 'db')
-res = odoo.post_value(ORDER_URL, {
+res = odoo.post(ORDER_URL, {
                     'client': {'name': 'abdo', 'email': 'abougaa@weelite.co'},
                     'products': [{'infos': {'default_code': '124','name': 'article','type': 'product', 'standard_price': 10,},
                                 'qty': 1,

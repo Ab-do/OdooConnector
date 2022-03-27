@@ -37,7 +37,7 @@ class Connector:
                 raise Exception('Error cnx')
         return self._cookies
 
-    def post_value(self, url, dt):
+    def post(self, url, dt):
         cnx = requests.post(
             url=self._url + url,
             headers=self._HEADER,
