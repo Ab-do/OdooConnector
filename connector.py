@@ -14,7 +14,7 @@ class Connector:
         self._cookies: dict = {}
         self._HEADER = {'Content-type': 'application/json'}
 
-    def auth(self):
+    def _auth(self):
         req = requests.post(
             self._url + '/auth/',
             data=json.dumps({
@@ -30,9 +30,9 @@ class Connector:
             return False
         return dict(req.cookies)
 
-    def connect(self):
+    def _connect(self):
         if not self._cookies.get('session_id', False):
-            self._cookies = self.auth()
+            self._cookies = self._auth()
             if not self._cookies:
                 raise Exception('Error cnx')
         return self._cookies
@@ -42,7 +42,7 @@ class Connector:
             url=self._url + url,
             headers=self._HEADER,
             data=json.dumps({'params': dt}),
-            cookies=self.connect()
+            cookies=self._connect()
         ).text
         if json.loads(cnx).get('error', {'code': False})['code'] == 100:
             self._cookies = {}
@@ -50,6 +50,6 @@ class Connector:
                 url=self._url + url,
                 headers=self._HEADER,
                 data=json.dumps({'params': dt}),
-                cookies=self.connect()
+                cookies=self._connect()
             ).text
         return cnx
