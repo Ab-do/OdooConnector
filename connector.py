@@ -13,6 +13,7 @@ class Connector:
         self._db = db
         self._cookies: dict = {}
         self._HEADER = {'Content-type': 'application/json'}
+        print("Model Odoo Version: {}".format(self.get('/odoo-connector-v')))
 
     def _auth(self):
         req = requests.post(
@@ -53,3 +54,11 @@ class Connector:
                 cookies=self._connect()
             ).text
         return cnx
+
+    def get(self, url):
+        cnx = requests.get(self._url+url)
+        if cnx.status_code == 200:
+            return cnx.text
+        else:
+            print(cnx.status_code)
+            return False
