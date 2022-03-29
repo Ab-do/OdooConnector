@@ -7,7 +7,7 @@ def cookies(func):
     def inner(*args, **kwargs):
         r = func(*args, **kwargs)
         if json.loads(r).get('error', {'code': False})['code'] == 100:
-            args[0]._cookies = {}
+            args[0].cookies = {}
             return func(*args, **kwargs)
         return r
     return inner
@@ -21,7 +21,7 @@ class Connector:
         self._login = login
         self._password = password
         self._db = db
-        self._cookies: dict = {'session_id': '28befa61980463f9d51acb9e22c5ab6c87fbeda0d'}
+        self.cookies: dict = {'session_id': '28befa61980463f9d51acb9e22c5ab6c87fbeda0d'}
         self._HEADER = {'Content-type': 'application/json'}
         print("Model Odoo Version: {}".format(self.get('/odoo-connector-v')))
 
@@ -42,11 +42,11 @@ class Connector:
         return dict(req.cookies)
 
     def _connect(self):
-        if not self._cookies.get('session_id', False):
-            self._cookies = self._auth()
-            if not self._cookies:
+        if not self.cookies.get('session_id', False):
+            self.cookies = self._auth()
+            if not self.cookies:
                 raise Exception('Error cnx')
-        return self._cookies
+        return self.cookies
 
     @cookies
     def post(self, url, dt):
